@@ -519,3 +519,34 @@ events:
       
       
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/home/ghitsh/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/home/ghitsh/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/share/cmake-3.26/Modules/CheckCSourceCompiles.cmake:76 (cmake_check_source_compiles)"
+      - "/home/ghitsh/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/share/cmake-3.26/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "/home/ghitsh/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/share/cmake-3.26/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "cmake-build-debug/_deps/googletest-src/googletest/cmake/internal_utils.cmake:70 (find_package)"
+      - "cmake-build-debug/_deps/googletest-src/googletest/CMakeLists.txt:88 (config_compiler_and_linker)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-NBWmVh"
+      binary: "/home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-NBWmVh"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: /home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-NBWmVh
+        
+        Run Build Command(s):/home/ghitsh/.local/share/JetBrains/Toolbox/apps/clion/bin/ninja/linux/x64/ninja -v cmTC_3689a && [1/2] /usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -fdiagnostics-color=always -o CMakeFiles/cmTC_3689a.dir/src.c.o -c /home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-NBWmVh/src.c
+        [2/2] : && /usr/bin/cc   CMakeFiles/cmTC_3689a.dir/src.c.o -o cmTC_3689a   && :
+        
+      exitCode: 0
+...
