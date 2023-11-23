@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Main target
-add_executable(locator main.cpp)
+add_executable(locator main.cpp
+        area.cpp
+        area.h)
 target_link_libraries(
         locator
         PUBLIC spdlog::spdlog_header_only
