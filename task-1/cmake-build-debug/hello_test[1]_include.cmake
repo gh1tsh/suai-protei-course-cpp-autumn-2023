@@ -1,5 +1,0 @@
-if(EXISTS "/home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/task-1/cmake-build-debug/hello_test[1]_tests.cmake")
-  include("/home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/task-1/cmake-build-debug/hello_test[1]_tests.cmake")
-else()
-  add_test(hello_test_NOT_BUILT hello_test_NOT_BUILT)
-endif()

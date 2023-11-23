@@ -1,0 +1,3 @@
+/home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug/CMakeFiles/locator.dir
+/home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
