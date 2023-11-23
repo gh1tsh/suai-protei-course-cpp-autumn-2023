@@ -1,7 +1,0 @@
-/home/ghitsh/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/ghitsh/.local/share/JetBrains/Toolbox/apps/clion/bin/ninja/linux/x64/ninja -G Ninja -S /home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator -B /home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug
--- Using the multi-header code from /home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug/_deps/json-src/include/
--- Build spdlog: 1.11.0
--- Build type: Debug
--- Configuring done (0.3s)
--- Generating done (0.0s)
--- Build files have been written to: /home/ghitsh/suai/suai-protei-course-cpp/suai-protei-course-cpp-autumn-2023/locator/cmake-build-debug
