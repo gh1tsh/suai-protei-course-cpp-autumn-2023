@@ -1,14 +1,14 @@
-#include "area.h"
+#include "zone.h"
 
 
-Area::Area(unsigned id, std::string name, int x_coordinate, int y_coordinate, unsigned radius) :
+Zone::Zone(unsigned id, std::string name, int x_coordinate, int y_coordinate, unsigned radius) :
 		id(id),
 		name(std::move(name)),
 		location(x_coordinate, y_coordinate),
 		radius(radius)
 {}
 
-Area::Area(Area const &other)
+Zone::Zone(Zone const &other)
 {
 	id = other.get_id();
 	name = other.get_name();
@@ -16,7 +16,7 @@ Area::Area(Area const &other)
 	radius = other.get_radius();
 }
 
-Area &Area::operator=(const Area &other)
+Zone &Zone::operator=(const Zone &other)
 {
 	id = other.get_id();
 	name = other.get_name();
@@ -26,60 +26,60 @@ Area &Area::operator=(const Area &other)
 	return *this;
 }
 
-unsigned Area::get_id() const
+unsigned Zone::get_id() const
 {
 	return id;
 }
 
-std::string const &Area::get_name() const
+std::string const &Zone::get_name() const
 {
 	return name;
 }
 
-std::pair<int, int> const &Area::get_location() const
+std::pair<int, int> const &Zone::get_location() const
 {
 	return location;
 }
 
-unsigned Area::get_radius() const
+unsigned Zone::get_radius() const
 {
 	return radius;
 }
 
-std::string const &Area::set_name(std::string new_name)
+std::string const &Zone::set_name(std::string new_name)
 {
 	name = std::move(new_name);
 	return name;
 }
 
-std::pair<int, int> const &Area::set_location(int new_x_coordianate, int new_y_coordinate)
+std::pair<int, int> const &Zone::set_location(int new_x_coordianate, int new_y_coordinate)
 {
 	location = {new_x_coordianate, new_y_coordinate};
 	return location;
 }
 
-unsigned Area::set_radius(unsigned new_radius)
+unsigned Zone::set_radius(unsigned new_radius)
 {
 	radius = new_radius;
 	return radius;
 }
 
-int Area::get_x() const
+int Zone::get_x() const
 {
 	return location.first;
 }
 
-int Area::get_y() const
+int Zone::get_y() const
 {
 	return location.second;
 }
 
-int Area::set_x(int x)
+int Zone::set_x(int x)
 {
 	return location.first = x;
 }
 
-int Area::set_y(int y)
+int Zone::set_y(int y)
 {
 	return location.second = y;
 }

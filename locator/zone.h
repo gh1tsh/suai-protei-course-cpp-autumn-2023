@@ -1,20 +1,20 @@
-#ifndef LOCATOR_AREA_H
-#define LOCATOR_AREA_H
+#ifndef LOCATOR_ZONE_H
+#define LOCATOR_ZONE_H
 
 
 #include <string>
 #include <utility>
 
 
-class Area
+class Zone
 {
 public:
-	Area(unsigned, std::string, int, int, unsigned);
+	Zone(unsigned, std::string, int, int, unsigned);
 
 	// Copy constructor
-	Area(Area const &);
+	Zone(Zone const &);
 
-	Area &operator=(Area const &other);
+	Zone &operator=(Zone const &other);
 
 	unsigned get_id() const;
 
@@ -46,4 +46,4 @@ private:
 };
 
 
-#endif //LOCATOR_AREA_H
+#endif //LOCATOR_ZONE_H

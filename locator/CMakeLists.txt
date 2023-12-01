@@ -8,8 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Main target
 add_executable(locator main.cpp
-        area.cpp
-        area.h
+        zone.cpp
+        zone.h
         subscriber.cpp
         subscriber.h)
 target_link_libraries(

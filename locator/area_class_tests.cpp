@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "area.h"
+#include "zone.h"
 
 
 TEST(AreaClassUnitTests, BasicConstructingObjects) {
