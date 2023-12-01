@@ -1,7 +1,3 @@
-//
-// Created by ghitsh on 25.11.23.
-//
-
 #ifndef LOCATOR_SUBSCRIBER_H
 #define LOCATOR_SUBSCRIBER_H
 
@@ -10,19 +6,28 @@
 #include <utility>
 
 
-class Subscriber {
+class Subscriber
+{
 public:
 	Subscriber(std::string, int, int);
 
-	explicit Subscriber(Subscriber const*);
+	explicit Subscriber(Subscriber const *);
 
-	Subscriber& operator=(Subscriber const*);
+	Subscriber &operator=(Subscriber const *);
 
-	std::string const& get_id() const;
+	std::string const &get_id() const;
 
-	std::pair<int, int> const& get_location() const;
+	std::pair<int, int> const &get_location() const;
 
-	std::pair<int, int> const& set_location(int, int);
+	std::pair<int, int> const &set_location(int, int);
+
+	int get_x() const;
+
+	int get_y() const;
+
+	int set_x(int);
+
+	int set_y(int);
 
 private:
 	std::string id;

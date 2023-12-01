@@ -1,7 +1,3 @@
-//
-// Created by ghitsh on 23.11.23.
-//
-
 #ifndef LOCATOR_AREA_H
 #define LOCATOR_AREA_H
 
@@ -10,28 +6,37 @@
 #include <utility>
 
 
-class Area {
+class Area
+{
 public:
 	Area(unsigned, std::string, int, int, unsigned);
 
 	// Copy constructor
-	Area(Area const&);
+	Area(Area const &);
 
-	Area& operator=(Area const& other);
+	Area &operator=(Area const &other);
 
 	unsigned get_id() const;
 
-	std::string const& get_name() const; // should be non-empty string
+	std::string const &get_name() const; // should be non-empty string
 
-	std::pair<int, int> const& get_location() const;
+	std::pair<int, int> const &get_location() const;
 
 	unsigned get_radius() const;
 
-	std::string const& set_name(std::string);
+	std::string const &set_name(std::string);
 
-	std::pair<int, int> const& set_location(int, int);
+	std::pair<int, int> const &set_location(int, int);
 
 	unsigned set_radius(unsigned);
+
+	int get_x() const;
+
+	int get_y() const;
+
+	int set_x(int);
+
+	int set_y(int);
 
 private:
 	unsigned id;
