@@ -32,3 +32,4 @@
 *.app
 
 locator/cmake-build-debug/
+locator/.idea
