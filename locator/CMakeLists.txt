@@ -9,7 +9,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Main target
 add_executable(locator main.cpp
         area.cpp
-        area.h)
+        area.h
+        subscriber.cpp
+        subscriber.h)
 target_link_libraries(
         locator
         PUBLIC spdlog::spdlog_header_only
@@ -44,7 +46,7 @@ FetchContent_MakeAvailable(spdlog)
 
 
 # Test target
-add_executable(hello_test hello_test.cpp)
+add_executable(hello_test area_class_tests.cpp)
 target_link_libraries(hello_test PUBLIC gtest_main)
 
 # Enable testing functionality
