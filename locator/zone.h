@@ -12,21 +12,21 @@ public:
 	Zone(unsigned, std::string, int, int, unsigned);
 
 	// Copy constructor
-	Zone(Zone const &);
+	Zone(Zone const&);
 
-	Zone &operator=(Zone const &other);
+	Zone& operator=(Zone const& other);
 
 	unsigned get_id() const;
 
-	std::string const &get_name() const; // should be non-empty string
+	std::string const& get_name() const;
 
-	std::pair<int, int> const &get_location() const;
+	std::pair<int, int> const& get_location() const;
 
 	unsigned get_radius() const;
 
-	std::string const &set_name(std::string);
+	std::string const& set_name(std::string);
 
-	std::pair<int, int> const &set_location(int, int);
+	std::pair<int, int> const& set_location(int, int);
 
 	unsigned set_radius(unsigned);
 
@@ -42,7 +42,7 @@ private:
 	unsigned id;
 	std::string name;
 	std::pair<int, int> location;
-	unsigned radius; // Radius of an area
+	unsigned radius;
 };
 
 

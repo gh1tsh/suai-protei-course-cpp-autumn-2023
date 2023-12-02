@@ -11,7 +11,9 @@ add_executable(locator main.cpp
         zone.cpp
         zone.h
         subscriber.cpp
-        subscriber.h)
+        subscriber.h
+        locator.cpp
+        locator.h)
 target_link_libraries(
         locator
         PUBLIC spdlog::spdlog_header_only
@@ -46,7 +48,9 @@ FetchContent_MakeAvailable(spdlog)
 
 
 # Test target
-add_executable(hello_test area_class_tests.cpp)
+add_executable(hello_test area_class_tests.cpp
+        locator.cpp
+        locator.h)
 target_link_libraries(hello_test PUBLIC gtest_main)
 
 # Enable testing functionality

@@ -8,7 +8,7 @@ Zone::Zone(unsigned id, std::string name, int x_coordinate, int y_coordinate, un
 		radius(radius)
 {}
 
-Zone::Zone(Zone const &other)
+Zone::Zone(Zone const& other)
 {
 	id = other.get_id();
 	name = other.get_name();
@@ -16,7 +16,7 @@ Zone::Zone(Zone const &other)
 	radius = other.get_radius();
 }
 
-Zone &Zone::operator=(const Zone &other)
+Zone& Zone::operator=(const Zone& other)
 {
 	id = other.get_id();
 	name = other.get_name();
@@ -31,12 +31,12 @@ unsigned Zone::get_id() const
 	return id;
 }
 
-std::string const &Zone::get_name() const
+std::string const& Zone::get_name() const
 {
 	return name;
 }
 
-std::pair<int, int> const &Zone::get_location() const
+std::pair<int, int> const& Zone::get_location() const
 {
 	return location;
 }
@@ -46,13 +46,13 @@ unsigned Zone::get_radius() const
 	return radius;
 }
 
-std::string const &Zone::set_name(std::string new_name)
+std::string const& Zone::set_name(std::string new_name)
 {
 	name = std::move(new_name);
 	return name;
 }
 
-std::pair<int, int> const &Zone::set_location(int new_x_coordianate, int new_y_coordinate)
+std::pair<int, int> const& Zone::set_location(int new_x_coordianate, int new_y_coordinate)
 {
 	location = {new_x_coordianate, new_y_coordinate};
 	return location;
