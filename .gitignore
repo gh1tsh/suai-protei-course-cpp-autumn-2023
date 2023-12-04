@@ -35,3 +35,4 @@ locator/cmake-build-debug/
 locator/.idea
 locator/json-schemas/
 locator/log/
+locator/config/
