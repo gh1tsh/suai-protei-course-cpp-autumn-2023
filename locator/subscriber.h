@@ -31,6 +31,8 @@ public:
 
 	int set_y(int);
 
+	std::string to_string() const;
+
 private:
 	std::string id;
 	std::pair<int, int> location;

@@ -83,3 +83,19 @@ int Zone::set_y(int y)
 {
 	return location.second = y;
 }
+
+std::string Zone::to_string() const
+{
+	std::string result = "Zone { id: ";
+	result += std::to_string(id);
+	result += ", name: ";
+	result += name;
+	result += ", location: [";
+	result += std::to_string(location.first);
+	result += ", ";
+	result += std::to_string(location.second);
+	result += "], radius: ";
+	result += std::to_string(radius);
+	result += " }";
+	return result;
+}

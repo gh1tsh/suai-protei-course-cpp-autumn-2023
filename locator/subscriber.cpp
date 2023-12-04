@@ -41,3 +41,15 @@ int Subscriber::set_y(int y)
 {
 	return location.second = y;
 }
+
+std::string Subscriber::to_string() const
+{
+	std::string result = "Subscriber { id: \"";
+	result += id;
+	result += "\", location: [";
+	result += std::to_string(location.first);
+	result += ", ";
+	result += std::to_string(location.second);
+	result += "] }";
+	return result;
+}

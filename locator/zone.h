@@ -38,6 +38,8 @@ public:
 
 	int set_y(int);
 
+	std::string to_string() const;
+
 private:
 	unsigned id;
 	std::string name;

@@ -13,5 +13,7 @@ using json = nlohmann::json;
 
 int main()
 {
-
+	Locator locator;
+	locator.load_subscribers_data_from_file("/home/ghitsh/suai/suai-protei-course-cpp/data/subs_data.json");
+	locator.dump_subscribers();
 }
