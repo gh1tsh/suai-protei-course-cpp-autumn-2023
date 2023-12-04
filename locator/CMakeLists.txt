@@ -13,7 +13,11 @@ add_executable(locator main.cpp
         subscriber.cpp
         subscriber.h
         locator.cpp
-        locator.h)
+        locator.h
+        zone_trigger.cpp
+        zone_trigger.h
+        proximity_trigger.cpp
+        proximity_trigger.h)
 target_link_libraries(
         locator
         PUBLIC spdlog::spdlog_header_only

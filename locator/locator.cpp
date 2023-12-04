@@ -17,6 +17,12 @@ using json = nlohmann::json;
 Locator::Locator()
 {}
 
+Locator::~Locator()
+{
+ // 1. delete all instances in zone_subscribers and subscriber_zones
+ // 2. finally delete memory for instances via subscribers and zones maps
+}
+
 Zone* Locator::add_zone(unsigned id, std::string const& name, int x_coordinate, int y_coordinate, unsigned radius)
 {
 	auto new_zone = new Zone(id, name, x_coordinate, y_coordinate, radius);
@@ -49,34 +55,26 @@ void Locator::dump_subscribers() const
 	}
 }
 
+void Locator::dump_zones() const
+{
+	std::cout << "Registered zones:" << std::endl;
+	for (auto const& [key, value] : zones) {
+		std::cout << '\t' << value->to_string() << std::endl;
+	}
+}
+
 void Locator::load_subscribers_data_from_file(std::string path_to_file)
 {
 	std::ifstream subscribers_data_json_file(path_to_file);
-	// TODO: add error handling logic here
+	// TODO: add error handling logic
 	json subscribers_data = json::parse(subscribers_data_json_file);
 	for (auto const& sub : subscribers_data["subscribers"]) {
 		auto* new_subscriber = new Subscriber(sub["id"], sub["location"]["x"], sub["location"]["y"]);
 		subscribers.insert(std::pair<std::string, Subscriber*>(new_subscriber->get_id(), new_subscriber));
 	}
-	/*
-	 * EXAMPLE
-	 *
-	 *
-	 * // Access subscribers array and iterate through its elements
-    if (data.contains("subscribers")) {
-        for (const auto& subscriber : data["subscribers"]) {
-            std::string id = subscriber["id"];
-            int x = subscriber["location"]["x"];
-            int y = subscriber["location"]["y"];
+}
 
-            std::cout << "Subscriber ID: " << id << std::endl;
-            std::cout << "Location - X: " << x << ", Y: " << y << std::endl;
-            std::cout << std::endl;
-        }
-    } else {
-        std::cerr << "No subscribers found in JSON." << std::endl;
-        return 1;
-    }
-	 *
-	 */
+void Locator::load_locator_config()
+{
+	std::ifstream locator_config_json_file()
 }

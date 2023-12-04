@@ -56,6 +56,8 @@ class Locator
 public:
 	Locator();
 
+	~Locator();
+
 	Zone* add_zone(unsigned, std::string const&, int, int, unsigned);
 
 	Subscriber* add_subscriber(std::string const&, int, int);
@@ -66,7 +68,11 @@ public:
 
 	void dump_subscribers() const;
 
+	void dump_zones() const;
+
 	void load_subscribers_data_from_file(std::string);
+
+	void load_locator_config();
 
 private:
 	std::map<std::string, Subscriber*> subscribers;
