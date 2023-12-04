@@ -6,25 +6,8 @@ Zone::Zone(unsigned id, std::string name, int x_coordinate, int y_coordinate, un
 		name(std::move(name)),
 		location(x_coordinate, y_coordinate),
 		radius(radius)
+		// 'triggers' map's constructor invokes implicitly
 {}
-
-Zone::Zone(Zone const& other)
-{
-	id = other.get_id();
-	name = other.get_name();
-	location = other.get_location();
-	radius = other.get_radius();
-}
-
-Zone& Zone::operator=(const Zone& other)
-{
-	id = other.get_id();
-	name = other.get_name();
-	location = other.get_location();
-	radius = other.get_radius();
-
-	return *this;
-}
 
 unsigned Zone::get_id() const
 {
@@ -82,6 +65,12 @@ int Zone::set_x(int x)
 int Zone::set_y(int y)
 {
 	return location.second = y;
+}
+
+ZoneTrigger* Zone::add_trigger(ZoneTrigger* t)
+{
+	triggers.insert(std::pair<std::string, ZoneTrigger*>(t->get_subscriber_id(), t));
+	return t;
 }
 
 std::string Zone::to_string() const

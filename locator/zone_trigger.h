@@ -6,9 +6,6 @@
 #define LOCATOR_ZONE_TRIGGER_H
 
 
-#include "subscriber.h"
-#include "zone.h"
-
 #include <string>
 
 #include <spdlog/spdlog.h>
@@ -20,7 +17,17 @@ enum Event {ENTERING_ZONE, EXITING_ZONE, ENTERING_EXITING_ZONE};
 class ZoneTrigger
 {
 public:
-	ZoneTrigger(std::string , unsigned, std::string , Event);
+	ZoneTrigger(std::string, std::string, unsigned, Event);
+
+	std::string const& get_id() const;
+
+	unsigned get_zone_id() const;
+
+	std::string const& get_subscriber_id() const;
+
+	Event get_event_type() const;
+
+	void action() const;
 
 private:
 	std::string id;

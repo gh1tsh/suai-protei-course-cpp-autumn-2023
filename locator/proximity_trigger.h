@@ -10,12 +10,16 @@
 
 #include <string>
 
+#include <spdlog/spdlog.h>
+
 
 class ProximityTrigger
 {
 public:
-	ProximityTrigger(std::string  id, std::string  firstSubscriberId, std::string  secondSubscriberId,
+	ProximityTrigger(std::string  id, std::string  first_subscriber_id, std::string  second_subscriber_id,
 	                 unsigned int distance);
+
+	void action() const;
 
 private:
 	std::string id;

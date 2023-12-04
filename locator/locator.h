@@ -8,6 +8,7 @@
 
 #include "zone.h"
 #include "subscriber.h"
+#include "zone_trigger.h"
 
 #include <map>
 #include <string>
@@ -70,15 +71,37 @@ public:
 
 	void dump_zones() const;
 
+	void dump_zone_subscribers() const;
+
+	void dump_subscriber_zones() const;
+
 	void load_subscribers_data_from_file(std::string);
 
 	void load_locator_config();
 
+	void add_zone_trigger(std::string const& trigger_id, std::string const& subscriber_id,
+			      unsigned zone_id, Event event_type);
+
+	std::pair<int, int> const& set_subscriber_location(std::string, int, int);
+
+	bool is_subscriber_in_zone(std::string, unsigned) const;
+
 private:
 	std::map<std::string, Subscriber*> subscribers;
 	std::map<unsigned, Zone*> zones;
-	std::map<std::string, std::list<Zone*>> zone_subscribers;
-	std::map<unsigned, std::list<Subscriber*>> subscriber_zones;
+	std::map<std::string, std::list<Zone*>> subscriber_zones;
+	std::map<unsigned, std::list<Subscriber*>> zone_subscribers;
+
+	void update_data();
+
+	void subscriber_location_changed(std::string);
+
+	void add_subscriber_zone_relation(std::string const&, unsigned);
+
+	void remove_subscriber_zone_relation(std::string const&, unsigned);
+
+	bool check_existence_subscriber_zone_relation(const std::string&, unsigned) const;
+
 };
 
 

@@ -13,10 +13,6 @@ class Subscriber
 public:
 	Subscriber(std::string, int, int);
 
-	explicit Subscriber(Subscriber const*);
-
-	Subscriber& operator=(Subscriber const*);
-
 	std::string const& get_id() const;
 
 	std::pair<int, int> const& get_location() const;
