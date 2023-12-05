@@ -52,7 +52,7 @@ FetchContent_MakeAvailable(spdlog)
 
 
 # Test target
-add_executable(hello_test area_class_tests.cpp
+add_executable(hello_test unit_tests.cpp
         locator.cpp
         locator.h)
 target_link_libraries(hello_test PUBLIC gtest_main)

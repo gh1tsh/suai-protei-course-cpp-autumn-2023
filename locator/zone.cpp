@@ -88,3 +88,16 @@ std::string Zone::to_string() const
 	result += " }";
 	return result;
 }
+bool Zone::has_trigger(std::string const& sid, Event event_type) const
+{
+	auto t = triggers.find(sid);
+	if (triggers.empty()) {
+		return false;
+	} else if (t == triggers.end()) {
+		return false;
+	} else if (t->second->get_event_type() != event_type) {
+		return false;
+	} else {
+		return true;
+	}
+}

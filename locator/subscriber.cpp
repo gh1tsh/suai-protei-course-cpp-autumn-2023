@@ -47,3 +47,30 @@ std::string Subscriber::to_string() const
 	result += "] }";
 	return result;
 }
+
+ProximityTrigger* Subscriber::add_trigger(ProximityTrigger* t)
+{
+	triggers.insert(std::pair<std::string, ProximityTrigger*>(t->get_second_subscriber_id(), t));
+	return t;
+}
+
+bool Subscriber::has_trigger(std::string const& sid) const
+{
+	auto t = triggers.find(sid);
+	if (triggers.empty()) {
+		return false;
+	} else if (t == triggers.end()) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+std::list<ProximityTrigger const*> Subscriber::get_triggers() const
+{
+	std::list<ProximityTrigger const*> list_triggers;
+	for (auto const& trigger : triggers) {
+		list_triggers.push_back(trigger.second);
+	}
+	return list_triggers;
+}

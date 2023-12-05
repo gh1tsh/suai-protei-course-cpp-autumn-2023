@@ -51,6 +51,12 @@ int main() {
 
  */
 
+/*
+ * TODO:
+ *      1) Реализовать деструкторы всех классов и проверить утечки памяти;
+ *      2) Реализовать всю базовую логику обработки ошибок;
+ *      3) До конца реализовать механизм триггеров.
+ */
 
 class Locator
 {
@@ -61,11 +67,15 @@ public:
 
 	Zone* add_zone(unsigned, std::string const&, int, int, unsigned);
 
-	Subscriber* add_subscriber(std::string const&, int, int);
-
 	Zone const& get_zone(unsigned) const;
 
-	Subscriber const& get_subcriber(const std::string&) const;
+	Subscriber* add_subscriber(std::string const&, int, int);
+
+	Subscriber const& get_subscriber(std::string const& id) const;
+
+	std::list<Subscriber*> const& get_subscribers_in_zone(unsigned) const;
+
+	std::list<Zone*> const& get_subscriber_zones(std::string const&) const;
 
 	void dump_subscribers() const;
 
@@ -75,12 +85,13 @@ public:
 
 	void dump_subscriber_zones() const;
 
-	void load_subscribers_data_from_file(std::string);
+	void load_subscribers_data_from_file(std::string const&);
 
 	void load_locator_config();
 
-	void add_zone_trigger(std::string const& trigger_id, std::string const& subscriber_id,
-			      unsigned zone_id, Event event_type);
+	void add_zone_trigger(std::string const&, unsigned, std::string const&, Event);
+
+	void add_proximity_trigger(std::string const&, std::string const&, std::string const&, unsigned);
 
 	std::pair<int, int> const& set_subscriber_location(std::string, int, int);
 
@@ -94,14 +105,15 @@ private:
 
 	void update_data();
 
-	void subscriber_location_changed(std::string);
-
 	void add_subscriber_zone_relation(std::string const&, unsigned);
 
 	void remove_subscriber_zone_relation(std::string const&, unsigned);
 
-	bool check_existence_subscriber_zone_relation(const std::string&, unsigned) const;
+	bool check_existence_subscriber_zone_relation(std::string const&, unsigned) const;
 
+	unsigned calculate_square_distance_between_subscribers(std::string const&, std::string const&) const;
+
+	void subscriber_location_changed(std::string const&) const;
 };
 
 

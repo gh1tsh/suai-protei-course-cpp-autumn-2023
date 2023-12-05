@@ -40,12 +40,20 @@ public:
 
 	ZoneTrigger* add_trigger(ZoneTrigger*);
 
+	ZoneTrigger const& get_trigger(std::string const&) const;
+
+	bool has_trigger(std::string const&, Event) const;
+
 private:
 	unsigned id;
 	std::string name;
 	std::pair<int, int> location;
 	unsigned radius;
-	// the 'triggers' hash table stores all triggers that subscribers have on certain zone
+	/*
+	 * The 'triggers' hash table stores all triggers that subscribers have on certain zone
+	 * std::string - subscriber id
+	 * ZoneTrigger* - pointer to trigger
+	 */
 	std::map<std::string, ZoneTrigger*> triggers;
 };
 

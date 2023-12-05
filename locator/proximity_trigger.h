@@ -6,8 +6,6 @@
 #define LOCATOR_PROXIMITY_TRIGGER_H
 
 
-#include "subscriber.h"
-
 #include <string>
 
 #include <spdlog/spdlog.h>
@@ -18,6 +16,14 @@ class ProximityTrigger
 public:
 	ProximityTrigger(std::string  id, std::string  first_subscriber_id, std::string  second_subscriber_id,
 	                 unsigned int distance);
+
+	std::string const& get_id() const;
+
+	std::string const& get_first_subscriber_id() const;
+
+	std::string const& get_second_subscriber_id() const;
+
+	unsigned get_distance() const;
 
 	void action() const;
 

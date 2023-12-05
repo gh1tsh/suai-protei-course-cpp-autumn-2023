@@ -3,9 +3,11 @@
 
 
 #include "zone.h"
+#include "proximity_trigger.h"
 
 #include <string>
 #include <utility>
+#include <list>
 
 
 class Subscriber
@@ -29,9 +31,23 @@ public:
 
 	std::string to_string() const;
 
+	ProximityTrigger* add_trigger(ProximityTrigger*);
+
+	ProximityTrigger const& get_trigger(std::string const&) const;
+
+	bool has_trigger(std::string const&) const;
+
+	std::list<ProximityTrigger const*> get_triggers() const;
+
 private:
 	std::string id;
 	std::pair<int, int> location;
+	/*
+	 * The 'triggers' hash table stores all triggers that subscriber has
+	 * std::string - related subscriber id
+	 * ProximityTrigger* - pointer to trigger
+	 */
+	std::map<std::string, ProximityTrigger*> triggers;
 };
 
 
