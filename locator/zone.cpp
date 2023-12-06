@@ -1,15 +1,22 @@
 #include "zone.h"
 
+#include <exception>
+
 #include <spdlog/spdlog.h>
 
 
-Zone::Zone(unsigned id, std::string name, int x_coordinate, int y_coordinate, unsigned radius) :
+Zone::Zone(unsigned id, std::string const& name, int x_coordinate, int y_coordinate, unsigned radius) :
 		id(id),
-		name(std::move(name)),
 		location(x_coordinate, y_coordinate),
 		radius(radius)
 		// 'triggers' map's constructor invokes implicitly
-{}
+{
+	if (name.empty()) {
+		throw std::invalid_argument("Zone name cannot be empty.");
+	} else {
+		this->name = name;
+	}
+}
 
 Zone::~Zone()
 {
@@ -38,9 +45,13 @@ unsigned Zone::get_radius() const
 	return radius;
 }
 
-std::string const& Zone::set_name(std::string new_name)
+std::string const& Zone::set_name(std::string const& new_name)
 {
-	name = std::move(new_name);
+	if (new_name.empty()) {
+		throw std::invalid_argument("Zone name cannot be empty string.");
+	} else {
+		this->name = new_name;
+	}
 	return name;
 }
 
@@ -84,20 +95,24 @@ ZoneTrigger* Zone::add_trigger(ZoneTrigger* t)
 	return t;
 }
 
+ZoneTrigger const& Zone::get_trigger(std::string const& trigger_id)
+{
+	auto target = get_trigger_iter(trigger_id);
+	if (target == triggers.end()) {
+		throw std::invalid_argument(this->to_string()
+					    + "' does not have trigger with "
+					    + "id '" + trigger_id + "'.");
+	}
+	return *(*target);
+}
+
 void Zone::remove_trigger(std::string const& trigger_id)
 {
-	std::list<ZoneTrigger*>::iterator target = triggers.end();
-	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
-		if ((*iter)->get_id() == trigger_id) {
-			target = iter;
-			break;
-		}
-	}
-//	auto target = triggers.find(trigger_id);
-	if (target == triggers.end()) {
-		// throw exception about lack of trigger with such id
-		spdlog::error("No trigger with id " + trigger_id);
+	if (!check_trigger_exist(trigger_id)) {
+		throw std::invalid_argument(this->to_string()
+					    + "' does not have trigger with id '" + trigger_id + "'.");
 	} else {
+		auto target = get_trigger_iter(trigger_id);
 		delete *target;
 		triggers.erase(target);
 	}
@@ -136,5 +151,37 @@ bool Zone::has_trigger(std::string const& sid, Event event_type) const
 	} else {
 		return true;
 	}
+}
+bool Zone::check_trigger_exist(std::string const& trigger_id)
+{
+	auto target = get_trigger_iter(trigger_id);
+	return (target != triggers.end());
+}
+std::list<ZoneTrigger*>::iterator Zone::get_trigger_iter(std::string const& trigger_id)
+{
+	std::list<ZoneTrigger*>::iterator target = triggers.end();
+	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
+		if ((*iter)->get_id() == trigger_id) {
+			target = iter;
+			break;
+		}
+	}
+	return target;
+}
+ZoneTrigger const& Zone::get_trigger_by_subscriber_id(std::string const&subscriber_id)
+{
+	std::list<ZoneTrigger*>::const_iterator target = triggers.end();
+	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
+		if ((*iter)->get_subscriber_id() == subscriber_id) {
+			target = iter;
+			break;
+		}
+	}
+	if (target == triggers.end()) {
+		throw std::invalid_argument(this->to_string()
+		                                + "' does not have trigger for subscriber with "
+		                                + "id '" + subscriber_id + "'.");
+	}
+	return *(*target);
 }
 

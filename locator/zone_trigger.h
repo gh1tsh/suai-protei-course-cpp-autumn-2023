@@ -17,7 +17,7 @@ enum Event {ENTERING_ZONE, EXITING_ZONE, ENTERING_EXITING_ZONE};
 class ZoneTrigger
 {
 public:
-	ZoneTrigger(std::string, std::string, unsigned, Event);
+	ZoneTrigger(std::string const&, std::string const&, unsigned, Event);
 
 	std::string const& get_id() const;
 

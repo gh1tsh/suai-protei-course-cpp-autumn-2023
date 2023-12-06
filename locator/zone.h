@@ -13,7 +13,7 @@
 class Zone
 {
 public:
-	Zone(unsigned, std::string, int, int, unsigned);
+	Zone(unsigned, const std::string&, int, int, unsigned);
 
 	~Zone();
 
@@ -25,7 +25,7 @@ public:
 
 	unsigned get_radius() const;
 
-	std::string const& set_name(std::string);
+	std::string const& set_name(const std::string&);
 
 	std::pair<int, int> const& set_location(int, int);
 
@@ -45,9 +45,13 @@ public:
 
 	void remove_trigger(std::string const&);
 
-	ZoneTrigger const& get_trigger(std::string const&) const;
+	ZoneTrigger const& get_trigger(std::string const&);
+
+	ZoneTrigger const& get_trigger_by_subscriber_id(std::string const&);
 
 	bool has_trigger(std::string const&, Event) const;
+
+	bool check_trigger_exist(std::string const&);
 
 private:
 	unsigned id;
@@ -61,6 +65,8 @@ private:
 	 */
 //	std::map<std::string, ZoneTrigger*> triggers;
 	std::list<ZoneTrigger*> triggers;
+
+	std::list<ZoneTrigger*>::iterator get_trigger_iter(std::string const&);
 };
 
 

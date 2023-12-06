@@ -5,14 +5,26 @@
 #include "proximity_trigger.h"
 
 #include <utility>
+#include <exception>
 
-ProximityTrigger::ProximityTrigger(std::string id, std::string first_subscriber_id, std::string second_subscriber_id,
-								   unsigned distance) :
-	id(std::move(id)),
-	first_subscriber_id(std::move(first_subscriber_id)),
-	second_subscriber_id(std::move(second_subscriber_id)),
-	distance(distance)
-{}
+ProximityTrigger::ProximityTrigger(std::string const& id,
+				   std::string const& first_subscriber_id,
+				   std::string const& second_subscriber_id,
+				   unsigned distance)
+{
+	if (id.empty()) {
+		throw std::invalid_argument("ProximityTrigger identifier cannot be empty string.");
+	} else {
+		this->id = id;
+	}
+	if (first_subscriber_id.empty() || second_subscriber_id.empty()) {
+		throw std::invalid_argument("Subscriber identifier cannot be empty string.");
+	} else {
+		this->first_subscriber_id = first_subscriber_id;
+		this->second_subscriber_id = second_subscriber_id;
+	}
+	this->distance = distance;
+}
 
 std::string const& ProximityTrigger::get_id() const
 {
@@ -36,6 +48,6 @@ unsigned ProximityTrigger::get_distance() const
 
 void ProximityTrigger::action() const
 {
-	std::string msg = "subscriber with id '" + first_subscriber_id + "' - subscriber with id '" + second_subscriber_id + ".";
+	std::string const msg("subscriber with id '" + first_subscriber_id + "' - subscriber with id '" + second_subscriber_id + ".");
 	spdlog::info(msg);
 }

@@ -13,7 +13,7 @@
 class Subscriber
 {
 public:
-	Subscriber(std::string, int, int);
+	Subscriber(const std::string&, int, int);
 
 	~Subscriber();
 
@@ -37,11 +37,13 @@ public:
 
 	void remove_trigger(std::string const&);
 
-	ProximityTrigger const& get_trigger(std::string const&) const;
+	ProximityTrigger const& get_trigger(std::string const&);
 
 	bool has_trigger(std::string const&) const;
 
 	std::list<ProximityTrigger> get_triggers() const;
+
+	bool check_trigger_exist(std::string const&);
 
 private:
 	std::string id;
@@ -53,6 +55,8 @@ private:
 	 */
 //	std::map<std::string, ProximityTrigger*> triggers;
 	std::list<ProximityTrigger*> triggers;
+
+	std::list<ProximityTrigger*>::iterator get_trigger_iter(std::string const&);
 };
 
 

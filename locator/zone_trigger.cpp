@@ -5,13 +5,24 @@
 #include "zone_trigger.h"
 
 #include <utility>
+#include <exception>
 
-ZoneTrigger::ZoneTrigger(std::string id, std::string subscriber_id, unsigned zone_id, Event event) :
-	id(std::move(id)),
+ZoneTrigger::ZoneTrigger(std::string const& id, std::string const& subscriber_id, unsigned zone_id, Event event) :
 	zone_id(zone_id),
-	subscriber_id(std::move(subscriber_id)),
 	event(event)
-{}
+{
+	if (id.empty()) {
+		throw std::invalid_argument("ZoneTrigger identifier cannot be empty string.");
+	} else {
+		this->id = id;
+	}
+
+	if (subscriber_id.empty()) {
+		throw std::invalid_argument("Subscriber identifier cannot be empty string.");
+	} else {
+		this->subscriber_id = subscriber_id;
+	}
+}
 
 std::string const& ZoneTrigger::get_id() const
 {

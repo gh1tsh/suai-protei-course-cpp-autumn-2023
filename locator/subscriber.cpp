@@ -1,10 +1,18 @@
 #include "subscriber.h"
 
+#include <exception>
 
-Subscriber::Subscriber(std::string id,
+
+Subscriber::Subscriber(std::string const& id,
                        int x_coordinate,
-                       int y_coordinate) : id(std::move(id)), location(x_coordinate, y_coordinate)
-{};
+                       int y_coordinate) : location(x_coordinate, y_coordinate)
+{
+	if (id.empty()) {
+		throw std::invalid_argument("Subscriber identifier cannot be empty string.");
+	} else {
+		this->id = id;
+	}
+};
 
 Subscriber::~Subscriber()
 {
@@ -62,6 +70,13 @@ ProximityTrigger* Subscriber::add_trigger(ProximityTrigger* t)
 	return t;
 }
 
+ProximityTrigger const&
+	Subscriber::get_trigger(const std::string& trigger_id)
+{
+	auto target = get_trigger_iter(trigger_id);
+	return *(*target);
+}
+
 bool Subscriber::has_trigger(std::string const& sid) const
 {
 	if (triggers.empty()) {
@@ -91,17 +106,30 @@ std::list<ProximityTrigger> Subscriber::get_triggers() const
 }
 void Subscriber::remove_trigger(std::string const& trigger_id)
 {
-	std::list<ProximityTrigger*>::const_iterator target = triggers.end();
+	if (!check_trigger_exist(trigger_id)) {
+		throw std::invalid_argument(this->to_string()
+					    + "' does not have a trigger with id '" + trigger_id + "'.");
+	} else {
+		auto target = get_trigger_iter(trigger_id);
+		delete *target;
+		triggers.erase(target);
+	}
+}
+bool Subscriber::check_trigger_exist(std::string const& trigger_id)
+{
+	auto target = get_trigger_iter(trigger_id);
+	return (target != triggers.end());
+}
+
+std::list<ProximityTrigger*>::iterator
+	Subscriber::get_trigger_iter(std::string const& trigger_id)
+{
+	std::list<ProximityTrigger*>::iterator target = triggers.end();
 	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
 		if ((*iter)->get_id() == trigger_id) {
 			target = iter;
 			break;
 		}
 	}
-	if (target == triggers.end()) {
-		spdlog::error("There is no trigger with id " + trigger_id);
-	} else {
-		delete *target;
-		triggers.erase(target);
-	}
+	return target;
 }

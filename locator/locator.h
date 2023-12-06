@@ -53,7 +53,6 @@ int main() {
 
 /*
  * TODO:
- *      1) Реализовать деструкторы всех классов и проверить утечки памяти;
  *      2) Реализовать всю базовую логику обработки ошибок;
  */
 
@@ -72,9 +71,9 @@ public:
 
 	Subscriber const& get_subscriber(std::string const& id) const;
 
-	std::list<Subscriber*> const& get_subscribers_in_zone(unsigned) const;
+	std::list<Subscriber> get_subscribers_in_zone(unsigned) const;
 
-	std::list<Zone*> const& get_subscriber_zones(std::string const&) const;
+	std::list<Zone> get_subscriber_zones(std::string const&) const;
 
 	void dump_subscribers() const;
 
@@ -84,7 +83,7 @@ public:
 
 	void dump_subscriber_zones() const;
 
-	void load_subscribers_data_from_file(std::string const&);
+	void load_subscriber_data_from_file(std::string const& path_to_file);
 
 	void load_locator_config();
 
@@ -92,9 +91,9 @@ public:
 
 	void add_proximity_trigger(std::string const&, std::string const&, std::string const&, unsigned);
 
-	std::pair<int, int> const& set_subscriber_location(std::string, int, int);
+	std::pair<int, int> const& set_subscriber_location(const std::string&, int, int);
 
-	bool is_subscriber_in_zone(std::string, unsigned) const;
+	bool is_subscriber_in_zone(const std::string&, unsigned) const;
 
 private:
 	std::map<std::string, Subscriber*> subscribers;
@@ -108,11 +107,15 @@ private:
 
 	void remove_subscriber_zone_relation(std::string const&, unsigned);
 
-	bool check_existence_subscriber_zone_relation(std::string const&, unsigned) const;
+	bool check_subscriber_zone_relation_exist(std::string const&, unsigned) const;
 
 	unsigned calculate_square_distance_between_subscribers(std::string const&, std::string const&) const;
 
 	void subscriber_location_changed(std::string const&) const;
+
+	bool check_subscriber_exist(std::string const&) const;
+
+	bool check_zone_exist(unsigned) const;
 };
 
 

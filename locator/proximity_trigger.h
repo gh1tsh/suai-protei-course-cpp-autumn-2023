@@ -14,7 +14,9 @@
 class ProximityTrigger
 {
 public:
-	ProximityTrigger(std::string  id, std::string  first_subscriber_id, std::string  second_subscriber_id,
+	ProximityTrigger(std::string const& id,
+			 std::string const& first_subscriber_id,
+			 std::string const& second_subscriber_id,
 	                 unsigned int distance);
 
 	std::string const& get_id() const;
