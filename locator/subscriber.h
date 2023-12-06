@@ -15,6 +15,8 @@ class Subscriber
 public:
 	Subscriber(std::string, int, int);
 
+	~Subscriber();
+
 	std::string const& get_id() const;
 
 	std::pair<int, int> const& get_location() const;
@@ -33,11 +35,13 @@ public:
 
 	ProximityTrigger* add_trigger(ProximityTrigger*);
 
+	void remove_trigger(std::string const&);
+
 	ProximityTrigger const& get_trigger(std::string const&) const;
 
 	bool has_trigger(std::string const&) const;
 
-	std::list<ProximityTrigger const*> get_triggers() const;
+	std::list<ProximityTrigger> get_triggers() const;
 
 private:
 	std::string id;
@@ -47,8 +51,10 @@ private:
 	 * std::string - related subscriber id
 	 * ProximityTrigger* - pointer to trigger
 	 */
-	std::map<std::string, ProximityTrigger*> triggers;
+//	std::map<std::string, ProximityTrigger*> triggers;
+	std::list<ProximityTrigger*> triggers;
 };
+
 
 
 #endif //LOCATOR_SUBSCRIBER_H

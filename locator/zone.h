@@ -7,12 +7,15 @@
 #include <string>
 #include <utility>
 #include <map>
+#include <list>
 
 
 class Zone
 {
 public:
 	Zone(unsigned, std::string, int, int, unsigned);
+
+	~Zone();
 
 	unsigned get_id() const;
 
@@ -40,6 +43,8 @@ public:
 
 	ZoneTrigger* add_trigger(ZoneTrigger*);
 
+	void remove_trigger(std::string const&);
+
 	ZoneTrigger const& get_trigger(std::string const&) const;
 
 	bool has_trigger(std::string const&, Event) const;
@@ -54,7 +59,8 @@ private:
 	 * std::string - subscriber id
 	 * ZoneTrigger* - pointer to trigger
 	 */
-	std::map<std::string, ZoneTrigger*> triggers;
+//	std::map<std::string, ZoneTrigger*> triggers;
+	std::list<ZoneTrigger*> triggers;
 };
 
 

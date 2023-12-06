@@ -6,6 +6,13 @@ Subscriber::Subscriber(std::string id,
                        int y_coordinate) : id(std::move(id)), location(x_coordinate, y_coordinate)
 {};
 
+Subscriber::~Subscriber()
+{
+	for (auto const& t : triggers) delete t;
+	while (!triggers.empty())
+		triggers.pop_back();
+}
+
 std::string const& Subscriber::get_id() const
 {
 	return id;
@@ -50,27 +57,51 @@ std::string Subscriber::to_string() const
 
 ProximityTrigger* Subscriber::add_trigger(ProximityTrigger* t)
 {
-	triggers.insert(std::pair<std::string, ProximityTrigger*>(t->get_second_subscriber_id(), t));
+//	triggers.insert(std::pair<std::string, ProximityTrigger*>(t->get_second_subscriber_id(), t));
+	triggers.push_back(t);
 	return t;
 }
 
 bool Subscriber::has_trigger(std::string const& sid) const
 {
-	auto t = triggers.find(sid);
 	if (triggers.empty()) {
 		return false;
-	} else if (t == triggers.end()) {
+	}
+	std::list<ProximityTrigger*>::const_iterator t = triggers.end();
+	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
+		if ((*iter)->get_second_subscriber_id() == sid) {
+			t = iter;
+			break;
+		}
+	}
+	if (t == triggers.end()) {
 		return false;
 	} else {
 		return true;
 	}
 }
 
-std::list<ProximityTrigger const*> Subscriber::get_triggers() const
+std::list<ProximityTrigger> Subscriber::get_triggers() const
 {
-	std::list<ProximityTrigger const*> list_triggers;
+	std::list<ProximityTrigger> list_triggers;
 	for (auto const& trigger : triggers) {
-		list_triggers.push_back(trigger.second);
+		list_triggers.push_back(*trigger);
 	}
 	return list_triggers;
+}
+void Subscriber::remove_trigger(std::string const& trigger_id)
+{
+	std::list<ProximityTrigger*>::const_iterator target = triggers.end();
+	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
+		if ((*iter)->get_id() == trigger_id) {
+			target = iter;
+			break;
+		}
+	}
+	if (target == triggers.end()) {
+		spdlog::error("There is no trigger with id " + trigger_id);
+	} else {
+		delete *target;
+		triggers.erase(target);
+	}
 }

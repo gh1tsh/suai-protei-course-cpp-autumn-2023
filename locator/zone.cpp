@@ -1,5 +1,7 @@
 #include "zone.h"
 
+#include <spdlog/spdlog.h>
+
 
 Zone::Zone(unsigned id, std::string name, int x_coordinate, int y_coordinate, unsigned radius) :
 		id(id),
@@ -8,6 +10,13 @@ Zone::Zone(unsigned id, std::string name, int x_coordinate, int y_coordinate, un
 		radius(radius)
 		// 'triggers' map's constructor invokes implicitly
 {}
+
+Zone::~Zone()
+{
+	for (auto const& t : triggers) delete t;
+	while (!triggers.empty())
+		triggers.pop_back();
+}
 
 unsigned Zone::get_id() const
 {
@@ -69,8 +78,29 @@ int Zone::set_y(int y)
 
 ZoneTrigger* Zone::add_trigger(ZoneTrigger* t)
 {
-	triggers.insert(std::pair<std::string, ZoneTrigger*>(t->get_subscriber_id(), t));
+//	triggers.insert(std::pair<std::string, ZoneTrigger*>(t->get_subscriber_id(), t));
+//	triggers[t->get_subscriber_id()] = t;
+	triggers.push_back(t);
 	return t;
+}
+
+void Zone::remove_trigger(std::string const& trigger_id)
+{
+	std::list<ZoneTrigger*>::iterator target = triggers.end();
+	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
+		if ((*iter)->get_id() == trigger_id) {
+			target = iter;
+			break;
+		}
+	}
+//	auto target = triggers.find(trigger_id);
+	if (target == triggers.end()) {
+		// throw exception about lack of trigger with such id
+		spdlog::error("No trigger with id " + trigger_id);
+	} else {
+		delete *target;
+		triggers.erase(target);
+	}
 }
 
 std::string Zone::to_string() const
@@ -90,14 +120,21 @@ std::string Zone::to_string() const
 }
 bool Zone::has_trigger(std::string const& sid, Event event_type) const
 {
-	auto t = triggers.find(sid);
 	if (triggers.empty()) {
 		return false;
-	} else if (t == triggers.end()) {
-		return false;
-	} else if (t->second->get_event_type() != event_type) {
+	}
+	std::list<ZoneTrigger*>::const_iterator target = triggers.end();
+	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
+		if ((*iter)->get_subscriber_id() == sid
+		    && (*iter)->get_event_type() == event_type) {
+			target = iter;
+			break;
+		}
+	}
+	if (target == triggers.end()) {
 		return false;
 	} else {
 		return true;
 	}
 }
+

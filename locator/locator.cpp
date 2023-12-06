@@ -22,6 +22,18 @@ Locator::~Locator()
 {
  // 1. delete all instances in zone_subscribers and subscriber_zones
  // 2. finally delete memory for instances via subscribers and zones maps
+ /*
+  *     std::map<std::string, Subscriber*> subscribers;
+	std::map<unsigned, Zone*> zones;
+	std::map<std::string, std::list<Zone*>> subscriber_zones;
+	std::map<unsigned, std::list<Subscriber*>> zone_subscribers;
+  */
+	while (!subscriber_zones.empty()) subscriber_zones.erase(subscriber_zones.begin());
+	while (!zone_subscribers.empty()) zone_subscribers.erase(zone_subscribers.begin());
+	for (auto& e : zones) delete e.second;
+	for (auto& e : subscribers) delete e.second;
+	while (!zones.empty()) zones.erase(zones.begin());
+	while (!subscribers.empty()) subscribers.erase(subscribers.begin());
 }
 
 Zone* Locator::add_zone(unsigned id,
@@ -248,9 +260,18 @@ void Locator::add_proximity_trigger(
 	subscriber_location_changed(first_subscriber_id);
 }
 
-ZoneTrigger const& Zone::get_trigger(const std::string& trigger_id) const
+ZoneTrigger const& Zone::get_trigger(const std::string& sid) const
 {
-	return *triggers.at(trigger_id);
+	//gets trigger of certain subscriber
+//	return *triggers.at(trigger_id);
+	std::list<ZoneTrigger*>::const_iterator target = triggers.end();
+	for (auto iter = triggers.begin(); iter != triggers.end(); ++iter) {
+		if ((*iter)->get_subscriber_id() == sid) {
+			target = iter;
+			break;
+		}
+	}
+	return *(*target);
 }
 
 std::pair<int, int> const& Locator::set_subscriber_location(std::string subscriber_id, int new_x_coordinate,
@@ -278,12 +299,22 @@ unsigned Locator::calculate_square_distance_between_subscribers(std::string cons
 
 void Locator::subscriber_location_changed(std::string const& sid) const
 {
-	std::list<ProximityTrigger const*> subscriber_triggers = subscribers.at(sid)->get_triggers();
+	std::list<ProximityTrigger> subscriber_triggers = subscribers.at(sid)->get_triggers();
 	for (auto const& t : subscriber_triggers) {
-		unsigned current_distance = calculate_square_distance_between_subscribers(sid, t->get_second_subscriber_id());
+		unsigned current_distance = calculate_square_distance_between_subscribers(sid, t.get_second_subscriber_id());
 
-		if (current_distance == (t->get_distance() * t->get_distance())) {
-			t->action();
+		if (current_distance == (t.get_distance() * t.get_distance())) {
+			t.action();
 		}
 	}
 }
+
+
+/*
+ * CUSTOM EXCEPTION EXAMPLE
+ *
+ * class DivideByZeroException : public std::runtime_error {
+public:
+    DivideByZeroException() : std::runtime_error("Divide by zero error") {}
+};
+ */
