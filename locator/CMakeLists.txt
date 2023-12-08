@@ -47,15 +47,28 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/gabime/spdlog.git
         GIT_TAG v1.11.0
 )
-# Download spdlog
 FetchContent_MakeAvailable(spdlog)
 
 
 # Test target
-add_executable(hello_test unit_tests.cpp
+add_executable(unit_tests unit_tests.cpp
         locator.cpp
-        locator.h)
-target_link_libraries(hello_test PUBLIC gtest_main)
+        locator.h
+        zone.cpp
+        zone.h
+        subscriber.cpp
+        subscriber.h
+        zone_trigger.cpp
+        zone_trigger.h
+        proximity_trigger.cpp
+        proximity_trigger.h
+)
+target_link_libraries(
+        unit_tests
+        PUBLIC gtest_main
+        PUBLIC spdlog::spdlog_header_only
+        PUBLIC nlohmann_json::nlohmann_json
+)
 
 # Enable testing functionality
 enable_testing()
