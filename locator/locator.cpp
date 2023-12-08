@@ -75,30 +75,55 @@ Subscriber* Locator::add_subscriber(std::string const& id,
 
 }
 
-Zone const& Locator::get_zone(unsigned id) const
+Zone const& Locator::get_zone(unsigned zone_id) const
 {
-	return *zones.at(id);
+	if (!check_zone_exist(zone_id)) {
+		throw std::invalid_argument("Zone with identifier "
+					    + std::to_string(zone_id)
+					    + " does not exist.");
+	} else {
+		return *zones.at(zone_id);
+	}
 }
 
-Subscriber const& Locator::get_subscriber(std::string const& id) const
+Subscriber const& Locator::get_subscriber(std::string const& subscriber_id) const
 {
-	return *subscribers.at(id);
+	if (!check_subscriber_exist(subscriber_id)) {
+		throw std::invalid_argument("Subscriber with identifier '"
+					    + subscriber_id
+					    + "' does not exist.");
+	} else {
+		return *subscribers.at(subscriber_id);
+	}
 }
 
 std::list<Subscriber> Locator::get_subscribers_in_zone(unsigned zid) const
 {
+	if (!check_zone_exist(zid)) {
+		throw std::invalid_argument("Zone with identifier "
+					    + std::to_string(zid)
+					    + " does not exist.");
+	}
 	std::list<Subscriber> list_subscribers_in_zone;
-	for (auto const& e : zone_subscribers.at(zid)) {
-		list_subscribers_in_zone.push_back(*e);
+	if (zone_subscribers.find(zid) != zone_subscribers.end()) {
+		for (auto const& e : zone_subscribers.at(zid)) {
+			list_subscribers_in_zone.push_back(*e);
+		}
 	}
 	return list_subscribers_in_zone;
 }
 
 std::list<Zone> Locator::get_subscriber_zones(std::string const& sid) const
 {
+	if (!check_subscriber_exist(sid)) {
+		throw std::invalid_argument("Subscriber with identifier '"
+					    + sid + "' does not exist.");
+	}
 	std::list<Zone> list_subscriber_zones;
-	for (auto const& e : subscriber_zones.at(sid)) {
-		list_subscriber_zones.push_back(*e);
+	if (subscriber_zones.find(sid) != subscriber_zones.end()) {
+		for (auto const& e : subscriber_zones.at(sid)) {
+			list_subscriber_zones.push_back(*e);
+		}
 	}
 	return list_subscriber_zones;
 }
@@ -285,19 +310,40 @@ void Locator::update_data()
 
 void Locator::load_subscriber_data_from_file(std::string const& path_to_file)
 {
+	std::ifstream schema_file;
+	try {
+		schema_file.open("../../json-schemas/subscriber_data_schema.json");
+	} catch (std::exception& e) {
+		spdlog::error(
+			"Error reading the subscriber data schema json file"
+			" at '../../json-schemas/subscriber_data_schema.json'."
+			"\nDescription:\n\t{}Outcome: subscriber data will not "
+			"be load from the file.",
+			e.what());
+		return;
+	}
+	json schema;
+	try {
+		schema = json::parse(schema_file);
+	} catch (json::parse_error& e) {
+		spdlog::error("Error parsing subscriber data json schema "
+			      "file.\nDescription:\n\t{}\nOutcome: subscriber "
+			      "data will not be load from the file.",
+		              e.what());
+		return;
+	}
 	std::ifstream subscribers_data_json_file;
 	try {
 		subscribers_data_json_file.open(path_to_file);
 	} catch (std::exception& e) {
 		spdlog::error(
-			"Error reading subscriber data from file '{}'.\n"
-			"Description:\n\t{}\nOutcome: subscriber data will not "
-			"be load from the file.",
-			path_to_file,
-			e.what());
+		    "Error reading subscriber data from file '{}'.\n"
+		    "Description:\n\t{}\nOutcome: subscriber data will not "
+		    "be load from the file.",
+		    path_to_file,
+		    e.what());
 		return;
 	}
-	// TODO: add json file validation according to schema
 	json subscribers_data;
 	try {
 		subscribers_data = json::parse(subscribers_data_json_file);
@@ -309,6 +355,9 @@ void Locator::load_subscriber_data_from_file(std::string const& path_to_file)
 			      e.what());
 		return;
 	}
+
+	// TODO: add json file validation according to schema
+
 	for (auto const& sub : subscribers_data["subscribers"]) {
 		try {
 			add_subscriber(
@@ -328,7 +377,31 @@ void Locator::load_subscriber_data_from_file(std::string const& path_to_file)
 
 void Locator::load_locator_config()
 {
+	std::ifstream schema_file;
+	try {
+		schema_file.open("../../json-schemas/locator_config_schema.json");
+	} catch (std::exception& e) {
+		spdlog::error(
+		    "Error reading the locator configuration schema json file"
+		    " at '../../json-schemas/locator_config_schema.json'."
+		    "\nDescription:\n\t{}Outcome: subscriber data will not "
+		    "be load from the file.",
+		    e.what());
+		return;
+	}
+	json schema;
+	try {
+		schema = json::parse(schema_file);
+	} catch (json::parse_error& e) {
+		spdlog::error("Error parsing locator configuration json "
+			      "schema file.\nDescription:\n\t{}\nOutcome: "
+			      "subscriber data will not be load from the file.",
+		              e.what());
+		return;
+	}
+
 	// TODO: add json file validation according to schema
+
 	std::ifstream locator_config_json_file;
 	try {
 		locator_config_json_file.open("../config/locator_config.json");
@@ -410,7 +483,6 @@ void Locator::add_zone_trigger(
 }
 
 void Locator::add_proximity_trigger(
-    // TODO: нельзя добавить проксимити триггер, если одного из абонентов ещё не существует
     std::string const& trigger_id,
     std::string const& first_subscriber_id,
     std::string const& second_subscriber_id,
@@ -530,13 +602,19 @@ bool Locator::check_subscriber_exist(std::string const& subscriber_id) const
 	}
 	return result;
 }
-
-
-/*
- * CUSTOM EXCEPTION EXAMPLE
- *
- * class DivideByZeroException : public std::runtime_error {
-public:
-    DivideByZeroException() : std::runtime_error("Divide by zero error") {}
-};
- */
+Subscriber* Locator::get_subscriber_ptr(std::string const& subscriber_id)
+{
+	if (!check_subscriber_exist(subscriber_id)) {
+		return nullptr;
+	} else {
+		return subscribers.at(subscriber_id);
+	}
+}
+Zone* Locator::get_zone_ptr(unsigned zone_id)
+{
+	if (!check_zone_exist(zone_id)) {
+		return nullptr;
+	} else {
+		return zones.at(zone_id);
+	}
+}

@@ -51,11 +51,6 @@ int main() {
 
  */
 
-/*
- * TODO:
- *      2) Реализовать всю базовую логику обработки ошибок;
- */
-
 class Locator
 {
 public:
@@ -67,9 +62,13 @@ public:
 
 	Zone const& get_zone(unsigned) const;
 
+	Zone* get_zone_ptr(unsigned);
+
 	Subscriber* add_subscriber(std::string const&, int, int);
 
 	Subscriber const& get_subscriber(std::string const& id) const;
+
+	Subscriber* get_subscriber_ptr(std::string const&);
 
 	std::list<Subscriber> get_subscribers_in_zone(unsigned) const;
 
@@ -94,6 +93,9 @@ public:
 	std::pair<int, int> const& set_subscriber_location(const std::string&, int, int);
 
 	bool is_subscriber_in_zone(const std::string&, unsigned) const;
+
+	// TODO: Add methods to ensure that a specific subscriber is
+	//       in the particular zone.
 
 private:
 	std::map<std::string, Subscriber*> subscribers;
