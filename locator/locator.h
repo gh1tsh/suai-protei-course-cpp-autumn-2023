@@ -14,42 +14,6 @@
 #include <string>
 #include <list>
 
-/*
- * JSON SCHEMA VALIDATION EXAMPLE
- *
- *
-#include <iostream>
-#include <fstream>
-#include <nlohmann/json.hpp>
-
-using json = nlohmann::json;
-
-int main() {
-    // Load JSON schema
-    std::ifstream schemaFile("schema.json");
-    json schema;
-    schemaFile >> schema;
-
-    // Your JSON data for validation
-    json data = R"(
-        {
-            "name": "John Doe",
-            "age": 30
-        }
-    )"_json;
-
-    // Validate JSON data against the schema
-    try {
-        data.validate(schema);
-        std::cout << "Validation successful!" << std::endl;
-    } catch (const json::exception& e) {
-        std::cout << "Validation failed: " << e.what() << std::endl;
-    }
-
-    return 0;
-}
-
- */
 
 class Locator
 {
@@ -92,10 +56,7 @@ public:
 
 	std::pair<int, int> const& set_subscriber_location(const std::string&, int, int);
 
-	bool is_subscriber_in_zone(const std::string&, unsigned) const;
-
-	// TODO: Add methods to ensure that a specific subscriber is
-	//       in the particular zone.
+	bool is_subscriber_in_zone(std::string const&, unsigned) const;
 
 private:
 	std::map<std::string, Subscriber*> subscribers;
