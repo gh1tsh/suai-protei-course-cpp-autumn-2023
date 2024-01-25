@@ -35,3 +35,4 @@ locator-project/build/
 locator-project/logs/
 locator-project/locator-config/
 locator-project/temporary-files/
+locator-project/.cache/
