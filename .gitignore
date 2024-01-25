@@ -31,8 +31,7 @@
 *.out
 *.app
 
-locator/cmake-build-debug/
-locator/.idea
-locator/json-schemas/
-locator/log/
-locator/config/
+locator-project/build/
+locator-project/logs/
+locator-project/locator-config/
+locator-project/temporary-files/
